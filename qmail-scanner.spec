@@ -10,12 +10,12 @@
 Summary:	Content scanner for Qmail
 Summary(pl):	Skaner zawarto¶ci dla Qmaila
 Name:		qmail-scanner
-Version:	1.24
-Release:	3.23
+Version:	1.25
+Release:	0.1
 License:	GPL
 Group:		Applications/System
 Source0:	http://dl.sourceforge.net/qmail-scanner/%{name}-%{version}.tgz
-# Source0-md5:	0281b721b059e09c8470982d26e4ccb0
+# Source0-md5:	0117c425efb75208682fabcba4e1dd24
 Source1:	%{name}.conf
 Source2:	%{name}-report.sh
 Patch0:		%{name}-root.patch
