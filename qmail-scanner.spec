@@ -240,7 +240,7 @@ fi
 %doc contrib/test-clamd.pl contrib/qs2mrtg.pl contrib/mrtg-qmail-scanner.cfg
 
 %config(noreplace) %{_sysconfdir}/qmail-scanner.conf
-%attr(755,root,root) %{varqmail}/bin/qmail-scanner-queue.pl
+%attr(755,root,root) %config %{varqmail}/bin/qmail-scanner-queue.pl
 %attr(6755,qscand,qscand) %{varqmail}/bin/qmail-scanner-queue
 
 %dir %attr(750,qscand,qscand) /var/spool/qmailscan
