@@ -1,6 +1,4 @@
 #
-# TODO: eliminate groupadd/useradd from %%build, it will fail
-#
 # Conditional build:
 %bcond_with	spamassassin	# spamassassin
 %bcond_without	clamav		# clamav
@@ -105,12 +103,6 @@ ale tak¿e pocztê przekazywan± przez serwer (relaying).
 %patch5 -p1
 
 %build
-# create users. configure fails. DAMMIT
-[ "`getgid qscand`" ] || \
-/usr/sbin/groupadd -g %{groupid} -r -f qscand
-
-[ "`id -u qscand 2>/dev/null`" ] || \
-/usr/sbin/useradd -u %{userid} -o -M -r -d /var/spool/qmailscan -s /bin/false -g qscand -c "Qmail-Scanner Account" qscand
 
 scanners=`echo \
 %{?with_clamav:clamscan clamdscan} \
@@ -120,6 +112,7 @@ scanners=$(echo "$scanners" | tr ' ' ',')
 
 LANG=en_GB \
 ./configure \
+	--qs-user %(id -un) \
 	--domain localhost \
 	--batch \
 	--debug no \
