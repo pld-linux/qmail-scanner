@@ -1,6 +1,6 @@
---- a/qmail-scanner-queue.template~	2004-09-24 01:25:08.000000000 +0300
-+++ b/qmail-scanner-queue.template	2004-09-24 01:33:50.000000000 +0300
-@@ -91,11 +91,11 @@
+--- ../qmail-scanner-queue.template	2004-12-10 14:24:52.000000000 +0200
++++ b/qmail-scanner-queue.template	2004-12-10 14:25:44.000000000 +0200
+@@ -92,11 +92,11 @@
  
  
  #From: line  information used when making reports
@@ -14,8 +14,12 @@
  
  #Array of local domains that are checked against for
  #deciding whether or not to send recipient alerts to
-@@ -109,7 +109,7 @@
- my @scanner_array=(SCANNER_ARRAY);
+@@ -107,10 +107,10 @@
+ 
+ 
+ #Array of virus scanners used must point to subroutines
+-my @scanner_array=(SCANNER_ARRAY);
++our @scanner_array=(SCANNER_ARRAY);
  
  #Addresses that should be alerted of any quarantined Email
 -my $NOTIFY_ADDRS='NOTIFY_ADDRESSES';
@@ -23,7 +27,7 @@
  
  #Try to fix bad MIME messages before passing to MIME unpacker
  my $BAD_MIME_CHECKS='FIX_MIME';
-@@ -257,7 +257,7 @@
+@@ -259,7 +259,7 @@
  
  
  #Want debugging? Enable this and read $scandir/qmail-queue.log
