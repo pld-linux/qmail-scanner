@@ -179,9 +179,9 @@ if [[ "$groups" != *qscand* ]]; then
 	QSCAND=$(/usr/bin/getgid qscand)
 	if [ $? -eq 0 ]; then
 		# NOTE:
-		# not to wipe out other groups clamav could have,
-		# we specify full list of groups
-		%{_sbindir}/usermod -G ${groups// /,},qscand clamav &>/dev/null
+		# Not to wipe out other groups clamav could have,
+		# we specify full list of groups.
+		%{_sbindir}/usermod -G $(echo $groups qscand | tr ' ' ',') clamav
 		echo "Adding clamav to qscand group GID=$QSCAND"
 		if [ -f /var/lock/subsys/clamd ]; then
 			/etc/rc.d/init.d/clamd restart >&2
