@@ -1,15 +1,15 @@
---- a/quarantine-attachments.txt	Mon Jul 19 01:48:10 2004
-+++ b/quarantine-attachments.txt	Tue Sep 28 23:08:02 2004
+--- a/quarantine-attachments.txt	2004-07-19 01:48:10.000000000 +0300
++++ b/quarantine-attachments.txt	2004-11-28 21:47:34.000000000 +0200
 @@ -3,7 +3,7 @@
  # This is case-insensitive, and TAB-delimited. 
  #
  # ******
 -# REMEMBER: run /var/qmail/bin/qmail-scanner-queue.pl -g after 
-+# REMEMBER: run /var/qmail/bin/qmail-scanner-queue -g after 
++# REMEMBER: run /var/qmail/bin/qmail-scanner-queue -g after
  # this file is modified
  # ******
  #
-@@ -92,16 +92,19 @@
+@@ -92,16 +92,26 @@
  #
  # These are examples of prudent defaults to set for most sites.
  # Commented out by default
@@ -21,19 +21,26 @@
 -#.pif	0	PIF files not allowed per Company security policy
 -#.cpl	0	CPL files not allowed per Company security policy
 +.vbs	0	VBS files not allowed per Company security policy
++.vbe	0	VBE files not allowed per Company security policy
 +.lnk	0	LNK files not allowed per Company security policy
 +.scr	0	SCR files not allowed per Company security policy
 +.wsh	0	WSH files not allowed per Company security policy
++.wsf	0	WSF files not allowed per Company security policy
 +.hta	0	HTA files not allowed per Company security policy
 +.pif	0	PIF files not allowed per Company security policy
 +.cpl	0	CPL files not allowed per Company security policy
 +.exe	0	EXE files not allowed per Company security policy
 +.cmd	0	CMD files not allowed per Company security policy
 +.com	0	COM files not allowed per Company security policy
++.bat	0	BAT files not allowed per Company security policy
++.shs	0	SHS files not allowed per Company security policy
++.jse	0	JSE files not allowed per Company security policy
++.js	0	JS files not allowed per Company security policy
++
  
  # ******
 -# REMEMBER: run /var/qmail/bin/qmail-scanner-queue.pl -g after 
-+# REMEMBER: run /var/qmail/bin/qmail-scanner-queue -g after 
++# REMEMBER: run /var/qmail/bin/qmail-scanner-queue -g after
  # this file is modified
  # ******
  #
