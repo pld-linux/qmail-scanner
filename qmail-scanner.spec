@@ -11,7 +11,7 @@ Summary:	Content scanner for Qmail
 Summary(pl):	Skaner zawarto¶ci dla Qmaila
 Name:		qmail-scanner
 Version:	1.24
-Release:	3.22
+Release:	3.23
 License:	GPL
 Group:		Applications/System
 Source0:	http://dl.sourceforge.net/qmail-scanner/%{name}-%{version}.tgz
@@ -30,7 +30,6 @@ URL:		http://qmail-scanner.sourceforge.net/
 BuildRequires:	maildrop >= 1.3.8
 BuildRequires:	perl-DB_File >= 1.803
 BuildRequires:	perl-base >= 1:5.6.1
-BuildRequires:	qmail-maildirmake
 BuildRequires:	rpmbuild(macros) >= 1.159
 %if %{with spamassassin}
 BuildRequires:	spamassassin
@@ -131,10 +130,8 @@ install -d $RPM_BUILD_ROOT%{_sysconfdir}
 install -d $RPM_BUILD_ROOT%{_libdir}/%{name}
 install -d $RPM_BUILD_ROOT/var/spool/qmailscan/tmp
 
-maildirmake $RPM_BUILD_ROOT/var/spool/qmailscan/archives
-maildirmake $RPM_BUILD_ROOT/var/spool/qmailscan/failed
-maildirmake $RPM_BUILD_ROOT/var/spool/qmailscan/quarantine
-maildirmake $RPM_BUILD_ROOT/var/spool/qmailscan/working
+# Create maildirs.
+install -d $RPM_BUILD_ROOT/var/spool/qmailscan/{archives,failed,quarantine,working}/{cur,new,tmp}
 
 # Install configuration file.
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}
