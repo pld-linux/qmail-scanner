@@ -168,7 +168,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %if %{with clamav}
 %triggerin -- clamav
-# Initialize the version file.
+# Initialize the version file, as clamav version might have changed
 %{_libdir}/%{name}/qmail-scanner-queue -z
 
 groups=$(id -Gn clamav)
@@ -219,10 +219,6 @@ if [ "$1" = "0" ]; then
     %userremove qscand
     %groupremove qscand
 fi
-
-%triggerin -- clamav
-# Initialize the version file.
-%{_libdir}/%{name}/qmail-scanner-queue -z
 
 %files
 %defattr(644,root,root,755)
