@@ -1,0 +1,29 @@
+--- a/configure	Mon Feb 23 16:41:39 2004
++++ b/configure	Mon Feb 23 16:41:31 2004
+@@ -16,16 +16,16 @@
+ 
+ echo "Building Qmail-Scanner $QS_VERSION..."
+ 
+-if [ "`id |grep root`" = "" ]; then
+-    cat<<EOF
+-
+-Sorry, but this must be run as root, as several operations require - well 
+-root access :-)
+-
+-
+-EOF
+-    exit 1
+-fi
++#if [ "`id |grep root`" = "" ]; then
++#    cat<<EOF
++#
++#Sorry, but this must be run as root, as several operations require - well 
++#root access :-)
++#
++#
++#EOF
++#    exit 1
++#fi
+ 
+ if [ "$SPAMC_HOST" != "" ]; then 
+   SA_HN="-d $SPAMC_HOST" 

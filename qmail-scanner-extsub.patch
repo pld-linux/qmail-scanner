@@ -1,0 +1,25 @@
+load external sub. when you install package without scanner optimized into main
+binary, you will lose performance but still have system up.
+
+--- qmail-scanner-queue.template	2004-09-24 02:36:18.000000000 +0300
++++ v/qmail-scanner-queue.template	2004-09-24 02:28:37.000000000 +0300
+@@ -1016,10 +1016,18 @@
+   }
+   &debug("ini_sc: recursively scan the directory $ENV{'TMPDIR'}/");
+ 
++  for (@scanner_array) {
++	unless (defined &$_) {
++      my $s = $_;
++      $s =~ s/_scanner$//;
++	  &debug("ini_sc: load $s sub");
++	  require "$scandir/sub-$s.pl" 
++	}
++  }
++
+   #Run AV scanners - even if the message is already going to be quarantined
+   #due to some Policy: this way you get the definitive answer as to what is
+   #a virus...
+-
+   &scanloop; #JLH if (!$quarantine_event);
+ 
+   #Only run perlscanner if no reason to quarantine found so far

@@ -1,0 +1,12 @@
+--- a/qmail-scanner-queue.template~	2004-09-24 02:47:33.000000000 +0300
++++ a/qmail-scanner-queue.template	2004-09-24 02:49:25.000000000 +0300
+@@ -257,6 +257,9 @@
+ #Want debugging? Enable this and read $scandir/qmail-queue.log
+ our $DEBUG='DEBUG_LEVEL';
+ 
++# read site specific overrides.
++require "/etc/qmail-scanner.conf";
++
+ my @uufile_list = ();
+ my @attachment_list = ();
+ my @zipfile_list = ();
