@@ -1,4 +1,6 @@
 #
+# TODO: eliminate groupadd/useradd from %build, it will fail
+#
 # Conditional build:
 %bcond_with	spamassassin	# spamassassin
 %bcond_without	clamav		# clamav
@@ -13,7 +15,7 @@ Version:	1.24
 Release:	1
 License:	GPL
 Group:		Applications/System
-Source0:	http://dl.sourceforge.net/%{name}/%{name}-%{version}.tgz
+Source0:	http://dl.sourceforge.net/qmail-scanner/%{name}-%{version}.tgz
 # Source0-md5:	0281b721b059e09c8470982d26e4ccb0
 Source1:	%{name}.conf
 Source2:	%{name}-report.sh
@@ -34,22 +36,23 @@ BuildRequires:	rpmbuild(macros) >= 1.159
 BuildRequires:	spamassassin
 BuildRequires:	spamassassin-spamc
 %endif
-%{?with_clamav:Requires:	clamav}
-Requires:	fileutils
-Requires:	maildrop >= 1.3.8
-Requires:	perl >= 5.6.1
-Requires:	perl-Time-HiRes >= 1.20
-Requires:	perl(DB_File) >= 1.803
-Requires:	qmail
-%if %{with spamassassin}
-Requires:	spamassassin
-Requires:	spamassassin-spamc
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/bin/id
 Requires(pre):	/usr/sbin/groupadd
 Requires(pre):	/usr/sbin/useradd
 Requires(postun):	/usr/sbin/userdel
 Requires(postun):	/usr/sbin/groupdel
+%{?with_clamav:Requires:	clamav}
+Requires:	fileutils
+Requires:	maildrop >= 1.3.8
+Requires:	perl >= 1:5.6.1
+Requires:	perl-DB_File >= 1.803
+Requires:	perl-Time-HiRes >= 1.20
+Requires:	qmail
+%if %{with spamassassin}
+Requires:	spamassassin
+Requires:	spamassassin-spamc
+%endif
 Provides:	user(qscand)
 Provides:	group(qscand)
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -62,7 +65,7 @@ Qmail-Scanner is an addon that enables a Qmail email server to scan
 all gateway-ed email for certain characteristics (i.e. a content
 scanner). It is typically used for its anti-virus protection
 functions, in which case it is used in conjunction with external virus
-scanners. but also enables a site (at a server/site level) to react to
+scanners, but also enables a site (at a server/site level) to react to
 email that contains specific strings in particular headers, or
 particular attachment filenames or types (e.g. *.VBS attachments). It
 also can be used as an archiving tool for auditing or backup purposes.
@@ -71,9 +74,23 @@ some other Unix-based virus scanners, resulting in better performance.
 It is capable of scanning not only locally sent/received email, but
 also email that crosses the server in a relay capacity.
 
+%description -l pl
+Qmail-Scanner to dodatek umo¿liwiaj±cy serwerowi poczty elektronicznej
+Qmail skanowanie ca³ej przekazywanej poczty pod k±tem danych cech
+(tzn. skanowanie zawarto¶ci). Zwykle jest u¿ywany dla funkcji
+zabezpieczeñ antywirusowych, w którym to przypadku jest u¿ywany w
+po³±czeniu z zewnêtrznymi skanerami antywirusowymi, ale umo¿liwia
+tak¿e reagowanie (na poziomie serwera) na pocztê zawieraj±c± konkretne
+³añcuchy w pewnych nag³ówkach, albo pewne nazwy plików lub typy
+za³±czników (np. za³±czniki *.VBS). Mo¿e byæ u¿ywany tak¿e jako
+narzêdzie archiwizuj±ce do audytu lub kopii zapasowych. Qmail-Scanner
+jest zintegrowany z serwerem pocztowym na poziomie ni¿szym ni¿ inne
+uniksowe skanery antywirusowe, czego efektem jest lepsza wydajno¶æ.
+Program mo¿e skanowaæ nie tylko lokalnie wysy³an±/dostarczan± pocztê,
+ale tak¿e pocztê przekazywan± przez serwer (relaying).
+
 %prep
 %setup -q
-
 # Take out root install requirement.
 %patch0 -p1
 # load sub-$SCANNER.pl if needed.
@@ -90,10 +107,10 @@ also email that crosses the server in a relay capacity.
 %build
 # create users. configure fails. DAMMIT
 [ "`getgid qscand`" ] || \
-%{_sbindir}/groupadd -g %{groupid} -r -f qscand
+/usr/sbin/groupadd -g %{groupid} -r -f qscand
 
 [ "`id -u qscand 2>/dev/null`" ] || \
-%{_sbindir}/useradd -u %{userid} -o -M -r -d /var/spool/qmailscan -s /bin/false -g qscand -c "Qmail-Scanner Account" qscand
+/usr/sbin/useradd -u %{userid} -o -M -r -d /var/spool/qmailscan -s /bin/false -g qscand -c "Qmail-Scanner Account" qscand
 
 scanners=`echo \
 %{?with_clamav:clamscan clamdscan} \
@@ -109,7 +126,7 @@ LANG=en_GB \
 	--log-details no \
 	--skip-setuid-test \
 	--no-QQ-check \
-	--admin root\
+	--admin root \
 	--notify none \
 	--block-password-protected \
 	--scanners ${scanners:-none}
@@ -117,7 +134,6 @@ LANG=en_GB \
 # build for qmail-scanner-queue wrapper, so we don't need suidperl
 cd contrib
 %{__cc} %{rpmcflags} -o qmail-scanner-queue qmail-scanner-queue.c
-
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -155,6 +171,9 @@ for s in sub-*.pl; do
 	install $s $RPM_BUILD_ROOT/var/spool/qmailscan
 	echo "1;" >> $RPM_BUILD_ROOT/var/spool/qmailscan/$s
 done
+
+%clean
+rm -rf $RPM_BUILD_ROOT
 
 %if %{with clamav}
 %triggerin -- clamav
@@ -211,9 +230,6 @@ if [ "$1" = "0" ]; then
     %userremove qscand
     %groupremove qscand
 fi
-
-%clean
-rm -rf $RPM_BUILD_ROOT
 
 %triggerin -- clamav
 # Initialize the version file.
