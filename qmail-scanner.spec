@@ -35,6 +35,9 @@ Requires(pre):	/usr/sbin/groupadd
 Requires(pre):	/usr/sbin/useradd
 Requires(postun):	/usr/sbin/userdel
 Requires(postun):	/usr/sbin/groupdel
+BuildRequires:  rpmbuild(macros) >= 1.159
+Provides:   user(qscand)
+Provides:   group(qscand)
 BuildRequires:	qmail-maildirmake
 BuildRequires:	maildrop >= 1.3.8
 BuildRequires:	perl >= 5.6.1
