@@ -26,10 +26,10 @@ $out
 EOF
 
 # 1079  awk -F'\t' '{print $5}'< quarantine.log |sort |uniq -c|sort -nr
-# 1083  awk -F'\t' '{if (!a) a=$1; b=$1} END{print "Start:", a, "\nEnd:", b}' < quarantine.log 
+# 1083  awk -F'\t' '{if (!a) a=$1; b=$1} END{print "Start:", a, "\nEnd:", b}' < quarantine.log
 
 if [ "$mail" ]; then
-	install -m644 $tmp reports/$(LANG=C date -d $day '+%Y%m%d').txt
+	install -m644 $tmp reports/$(LANG=C date -d "$day" '+%Y%m%d').txt
 	mail -s "$(hostname -s): $header" ${MAILTO:-$LOGNAME} < $tmp
 	rm $tmp
 fi
