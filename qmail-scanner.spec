@@ -11,7 +11,7 @@ Summary:	Content scanner for Qmail
 Summary(pl):	Skaner zawarto¶ci dla Qmaila
 Name:		qmail-scanner
 Version:	1.25
-Release:	0.1
+Release:	0.2
 License:	GPL
 Group:		Applications/System
 Source0:	http://dl.sourceforge.net/qmail-scanner/%{name}-%{version}.tgz
@@ -157,8 +157,6 @@ install quarantine-attachments.txt $RPM_BUILD_ROOT/var/spool/qmailscan
 for s in sub-*.pl; do
 	install $s $RPM_BUILD_ROOT%{_libdir}/%{name}
 	echo "1;" >> $RPM_BUILD_ROOT%{_libdir}/%{name}/$s
-
-	ln -s %{_libdir}/%{name}/$s $RPM_BUILD_ROOT/var/spool/qmailscan/$s
 done
 
 %clean
