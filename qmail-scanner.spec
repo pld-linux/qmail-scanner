@@ -1,5 +1,5 @@
 #
-# TODO: eliminate groupadd/useradd from %build, it will fail
+# TODO: eliminate groupadd/useradd from %%build, it will fail
 #
 # Conditional build:
 %bcond_with	spamassassin	# spamassassin
