@@ -41,6 +41,7 @@ Provides:   group(qscand)
 BuildRequires:	qmail-maildirmake
 BuildRequires:	maildrop >= 1.3.8
 BuildRequires:	perl >= 5.6.1
+BuildRequires:	perl(DB_File) >= 1.803
 %{?with_clamav:BuildRequires:	clamav}
 %{?with_clamav:Requires:	clamav}
 %{?with_spamassassin:BuildRequires:	spamassassin, spamassassin-spamc}
@@ -92,7 +93,7 @@ scanners=`echo \
 %{?with_clamav:clamscan clamdscan} \
 %{?with_spamassassin:verbose_spamassassin fast_spamassassin} \
 `
-scanners=${scanners// /,}
+scanners=$(echo "$scanners" | tr ' ' ',')
 
 LANG=en_GB \
 ./configure \
