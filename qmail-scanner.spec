@@ -6,6 +6,7 @@
 %define	groupid	210
 %define	userid	210
 
+%include	/usr/lib/rpm/macros.perl
 Summary:	Content scanner for Qmail
 Summary(pl):	Skaner zawarto¶ci dla Qmaila
 Name:		qmail-scanner
@@ -43,11 +44,11 @@ Requires(postun):	/usr/sbin/groupdel
 %{?with_clamav:Requires:	clamav}
 Requires:	fileutils
 Requires:	maildrop >= 1.3.8
-Requires:	perl-DB_File >= 1.803
-Requires:	perl-Time-HiRes >= 1.20
-Requires:	perl-base >= 1:5.6.1
+#Requires:	perl-DB_File >= 1.803
+#Requires:	perl-Time-HiRes >= 1.20
+#Requires:	perl-base >= 1:5.6.1
 # For Sys::Syslog
-Requires:	perl-modules >= 1:5.8.0
+#Requires:	perl-modules >= 1:5.8.0
 Requires:	qmail
 %if %{with spamassassin}
 Requires:	spamassassin
