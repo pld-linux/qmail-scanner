@@ -5,7 +5,7 @@ cd /var/spool/qmailscan
 day="${1:-1 day ago}"
 mask=`LANG=C date -d "$day" '+%a, %d %b %Y '`
 
-header="Virus report for $(LANG=C date -d $day '+%Y/%m/%d')"
+header="Virus report for $(LANG=C date -d "$day" '+%Y/%m/%d')"
 
 if tty -s; then
 	echo "$header"
