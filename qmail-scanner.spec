@@ -11,7 +11,7 @@ Summary:	Content scanner for Qmail
 Summary(pl):	Skaner zawarto¶ci dla Qmaila
 Name:		qmail-scanner
 Version:	1.24
-Release:	3.18
+Release:	3.22
 License:	GPL
 Group:		Applications/System
 Source0:	http://dl.sourceforge.net/qmail-scanner/%{name}-%{version}.tgz
@@ -207,11 +207,12 @@ fi
 # Initialize the perlscanner database.
 %{_libdir}/%{name}/qmail-scanner-queue -g
 
+%triggerpostun -- %{name} < 1.24-3.22
 # upgrade qmail-scanner path in tcprules
 for s in qmtp smtp; do
 	if [ -f /etc/tcprules.d/tcp.qmail-$s ]; then
 		sed -i -e '
-		s,/var/qmail/bin/qmail-scanner-queue\(\.pl\)\?,/usr/lib/qmail-scanner/qmail-scanner-queue,
+		s,/var/qmail/bin/qmail-scanner-queue\(\.pl\)\?,%{_libdir}/%{name}/qmail-scanner-queue,
 		' /etc/tcprules.d/tcp.qmail-$s
 	fi
 done
