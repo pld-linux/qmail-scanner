@@ -1,9 +1,10 @@
 load external sub. when you install package without scanner optimized into main
 binary, you will lose performance but still have system up.
 
---- qmail-scanner-queue.template	2004-09-24 02:36:18.000000000 +0300
-+++ v/qmail-scanner-queue.template	2004-09-24 02:28:37.000000000 +0300
-@@ -1016,10 +1016,18 @@
+diff -u qmail-scanner-1.24.orig/qmail-scanner-queue.template qmail-scanner-1.24/qmail-scanner-queue.template
+--- qmail-scanner-1.24.orig/qmail-scanner-queue.template	2004-10-20 04:49:33.000000000 +0300
++++ qmail-scanner-1.24/qmail-scanner-queue.template	2004-12-16 01:58:13.000000000 +0200
+@@ -1019,10 +1019,18 @@
    }
    &debug("ini_sc: recursively scan the directory $ENV{'TMPDIR'}/");
  
@@ -12,7 +13,7 @@ binary, you will lose performance but still have system up.
 +      my $s = $_;
 +      $s =~ s/_scanner$//;
 +	  &debug("ini_sc: load $s sub");
-+	  require "$scandir/sub-$s.pl" 
++	  require "/usr/lib/qmail-scanner/sub-$s.pl";
 +	}
 +  }
 +

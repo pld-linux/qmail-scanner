@@ -1,0 +1,11 @@
+--- contrib/qmail-scanner-queue.c~	2004-12-16 01:52:59.000000000 +0200
++++ contrib/qmail-scanner-queue.c	2003-09-01 19:14:15.000000000 +0300
+@@ -9,7 +9,7 @@
+  * to "#!/usr/bin/perl" and "chmod 0755 /var/qmail/bin/qmail-scanner-queue.pl"
+  *
+  */
+-#define REAL_PATH "/var/qmail/bin/qmail-scanner-queue.pl"
++#define REAL_PATH "/usr/lib/qmail-scanner/qmail-scanner-queue.pl"
+ main(ac, av)
+      char **av;
+ {
