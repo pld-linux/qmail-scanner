@@ -26,8 +26,8 @@ Patch5:		%{name}-perm.patch
 URL:		http://qmail-scanner.sourceforge.net/
 %{?with_clamav:BuildRequires:	clamav}
 BuildRequires:	maildrop >= 1.3.8
-BuildRequires:	perl >= 5.6.1
-BuildRequires:	perl(DB_File) >= 1.803
+BuildRequires:	perl-DB_File >= 1.803
+BuildRequires:	perl-base >= 1:5.6.1
 BuildRequires:	qmail-maildirmake
 BuildRequires:	rpmbuild(macros) >= 1.159
 %if %{with spamassassin}
@@ -43,9 +43,9 @@ Requires(postun):	/usr/sbin/groupdel
 %{?with_clamav:Requires:	clamav}
 Requires:	fileutils
 Requires:	maildrop >= 1.3.8
-Requires:	perl >= 1:5.6.1
 Requires:	perl-DB_File >= 1.803
 Requires:	perl-Time-HiRes >= 1.20
+Requires:	perl-base >= 1:5.6.1
 Requires:	qmail
 %if %{with spamassassin}
 Requires:	spamassassin
@@ -103,7 +103,6 @@ ale tak¿e pocztê przekazywan± przez serwer (relaying).
 %patch5 -p1
 
 %build
-
 scanners=`echo \
 %{?with_clamav:clamscan clamdscan} \
 %{?with_spamassassin:verbose_spamassassin fast_spamassassin} \
@@ -188,7 +187,6 @@ if [[ "$groups" != *qscand* ]]; then
 		fi
 	fi
 fi
-
 %endif
 
 %post
@@ -202,7 +200,6 @@ if grep -q MAILDOMAIN /etc/qmail-scanner.conf; then
 	" /etc/qmail-scanner.conf.tmp > /etc/qmail-scanner.conf
 	rm -f /etc/qmail-scanner.conf.tmp
 fi
-
 
 # Initialize the version file.
 %{varqmail}/bin/qmail-scanner-queue -z
