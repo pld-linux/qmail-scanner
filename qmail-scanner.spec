@@ -1,12 +1,13 @@
 #
 # Conditional build:
-%bcond_with	spamassassin # spamassassin
-%bcond_without	clamav # clamav
+%bcond_with	spamassassin	# spamassassin
+%bcond_without	clamav		# clamav
 
-%define groupid 210
-%define userid 210
+%define	groupid	210
+%define	userid	210
 
-Summary:	Content Scanner for Qmail
+Summary:	Content scanner for Qmail
+Summary(pl):	Skaner zawarto¶ci dla Qmaila
 Name:		qmail-scanner
 Version:	1.24
 Release:	1
@@ -23,29 +24,34 @@ Patch3:		%{name}-localconf-vars.patch
 Patch4:		%{name}-attach.patch
 Patch5:		%{name}-perm.patch
 URL:		http://qmail-scanner.sourceforge.net/
-Requires:	qmail
+%{?with_clamav:BuildRequires:	clamav}
+BuildRequires:	maildrop >= 1.3.8
+BuildRequires:	perl >= 5.6.1
+BuildRequires:	perl(DB_File) >= 1.803
+BuildRequires:	qmail-maildirmake
+BuildRequires:	rpmbuild(macros) >= 1.159
+%if %{with spamassassin}
+BuildRequires:	spamassassin
+BuildRequires:	spamassassin-spamc
+%endif
+%{?with_clamav:Requires:	clamav}
+Requires:	fileutils
+Requires:	maildrop >= 1.3.8
 Requires:	perl >= 5.6.1
 Requires:	perl-Time-HiRes >= 1.20
 Requires:	perl(DB_File) >= 1.803
-Requires:	maildrop >= 1.3.8
-Requires:	fileutils
+Requires:	qmail
+%if %{with spamassassin}
+Requires:	spamassassin
+Requires:	spamassassin-spamc
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/bin/id
 Requires(pre):	/usr/sbin/groupadd
 Requires(pre):	/usr/sbin/useradd
 Requires(postun):	/usr/sbin/userdel
 Requires(postun):	/usr/sbin/groupdel
-BuildRequires:  rpmbuild(macros) >= 1.159
-Provides:   user(qscand)
-Provides:   group(qscand)
-BuildRequires:	qmail-maildirmake
-BuildRequires:	maildrop >= 1.3.8
-BuildRequires:	perl >= 5.6.1
-BuildRequires:	perl(DB_File) >= 1.803
-%{?with_clamav:BuildRequires:	clamav}
-%{?with_clamav:Requires:	clamav}
-%{?with_spamassassin:BuildRequires:	spamassassin, spamassassin-spamc}
-%{?with_spamassassin:Requires:	spamassassin, spamassassin-spamc}
+Provides:	user(qscand)
+Provides:	group(qscand)
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # not FHS compliant
@@ -192,13 +198,13 @@ fi
 # Initialize the perlscanner database.
 %{varqmail}/bin/qmail-scanner-queue -g
 
-
 %pre
-[ "`getgid qscand`" ] || \
-	/usr/sbin/groupadd -g %{groupid} -r -f qscand
+[ "`/usr/bin/getgid qscand`" ] || \
+	/usr/sbin/groupadd -g %{groupid} qscand
 
-[ "`id -u qscand 2>/dev/null`" ] || \
-	/usr/sbin/useradd -u %{userid} -o -M -r -d /var/spool/qmailscan -s /bin/false -g qscand -c "Qmail-Scanner Account" qscand
+[ "`/bin/id -u qscand 2>/dev/null`" ] || \
+	/usr/sbin/useradd -u %{userid} -d /var/spool/qmailscan \
+		-s /bin/false -g qscand -c "Qmail-Scanner Account" qscand
 
 %postun
 if [ "$1" = "0" ]; then
