@@ -154,7 +154,7 @@ done
 groups=$(id -Gn clamav)
 if [[ "$groups" != *qscand* ]]; then
 	# add qscand group to clamav
-	QSCAND=$(%{_bindir}/getgid qscand)
+	QSCAND=$(/usr/bin/getgid qscand)
 	if [ $? -eq 0 ]; then
 		# NOTE:
 		# not to wipe out other groups clamav could have,
@@ -198,8 +198,8 @@ fi
 
 %postun
 if [ "$1" = "0" ]; then
-	/usr/sbin/userdel qscand || true
-	/usr/sbin/groupdel qscand || true
+    %userremove qscand
+    %groupremove qscand
 fi
 
 %clean
@@ -221,16 +221,16 @@ rm -rf $RPM_BUILD_ROOT
 %doc contrib/test-clamd.pl contrib/qs2mrtg.pl contrib/mrtg-qmail-scanner.cfg
 
 %config(noreplace) %{_sysconfdir}/qmail-scanner.conf
-%attr(0755,root,root) %{varqmail}/bin/qmail-scanner-queue.pl
+%attr(755,root,root) %{varqmail}/bin/qmail-scanner-queue.pl
 %attr(6755,qscand,qscand) %{varqmail}/bin/qmail-scanner-queue
 
-%dir %attr(0750,qscand,qscand) /var/spool/qmailscan
+%dir %attr(750,qscand,qscand) /var/spool/qmailscan
 %dir %attr(2750,qscand,qscand) /var/spool/qmailscan/tmp
 
-%attr(-,qscand,qscand) /var/spool/qmailscan/archives
-%attr(-,qscand,qscand) /var/spool/qmailscan/failed
-%attr(-,qscand,qscand) /var/spool/qmailscan/quarantine
-%attr(-,qscand,qscand) /var/spool/qmailscan/working
+%attr(700,qscand,qscand) /var/spool/qmailscan/archives
+%attr(700,qscand,qscand) /var/spool/qmailscan/failed
+%attr(700,qscand,qscand) /var/spool/qmailscan/quarantine
+%attr(700,qscand,qscand) /var/spool/qmailscan/working
 
 %attr(644,qscand,qscand) %config(noreplace) %verify(not size mtime md5) /var/spool/qmailscan/*.log
 %attr(640,qscand,qscand) %verify(not size mtime md5) /var/spool/qmailscan/*.db
