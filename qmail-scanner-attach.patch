@@ -44,3 +44,96 @@
  # this file is modified
  # ******
  #
+--- ./quarantine-attachments.txt~	2005-04-19 09:42:06.000000000 +0300
++++ ./quarantine-attachments.txt	2005-04-19 09:46:29.000000000 +0300
+@@ -1,20 +1,20 @@
+ # Sample of well-known viruses that perlscan_scanner can use
+ #
+-# This is case-insensitive, and TAB-delimited. 
++# This is case-insensitive, and TAB-delimited.
+ #
+ # ******
+-# REMEMBER: run /var/qmail/bin/qmail-scanner-queue -g after
+-# this file is modified
++# REMEMBER: run to run after this file is modified:
++# /usr/lib/qmail-scanner/qmail-scanner-queue -g
+ # ******
+ #
+ # Format: three columns
+-# 
++#
+ # filename<TAB>size (in bytes)<TAB>Description of virus/whatever
+ #
+ # OR:
+ #
+ # string<TAB>Header<TAB>Description of virus/whatever
+-# 
++#
+ # [this one allows you to match on (e.g.) Subject line.
+ #
+ # NOTE 1: This is the crudest "virus scanning" you can do - we are
+@@ -28,7 +28,7 @@
+ #
+ # NOTE 3: Wildcards are supported. This system can also be used to deny
+ # Email containing "bad" extensions (e.g. .exe, .mp3, etc). No other
+-# wildcard type is supported. Be very careful with this feature. With 
++# wildcard type is supported. Be very careful with this feature. With
+ # wildcards, the size field is ignored (i.e. any size matches).
+ #
+ # .exe	0	Executable attachment too large
+@@ -40,16 +40,16 @@
+ #
+ # ...would stop any Email containing MP3 attachments passing.
+ #
+-# NOTE 4: No you can't use  this to ban any file (i.e. *.*) that's over 
+-# a certain size  - you should 
+-# "echo 10000000 > /var/qmail/control/databytes" 
++# NOTE 4: No you can't use this to ban any file (i.e. *.*) that's over
++# a certain size - you should
++# "echo 10000000 > /var/qmail/control/databytes"
+ # to set the maximum SMTP message size to 10Mb.
+ #
+-# NOTE 5: The second option allows you to match on header. This would allow 
+-# you to block Email viruses when you don't know anything else other than 
+-# there's a wierd Subject line (or From line, or X-Spanska: header, ...). 
+-# Note that it's a case-sensitive, REGEX string, and the system will 
+-# automatically surround it with ^ and $ before matching. i.e. if you 
++# NOTE 5: The second option allows you to match on header. This would allow
++# you to block Email viruses when you don't know anything else other than
++# there's a wierd Subject line (or From line, or X-Spanska: header, ...).
++# Note that it's a case-sensitive, REGEX string, and the system will
++# automatically surround it with ^ and $ before matching. i.e. if you
+ # want wildcards, explicitly put them in...
+ #
+ # The string _must_be_ "Virus-" followed by the header you wish to match
+@@ -59,7 +59,7 @@
+ #
+ # Pickles.*Breakfast	Virus-Subject:	Fake Example Pickles virus
+ #
+-# will match "Subject: Pickles for Breakfast" - and 
++# will match "Subject: Pickles for Breakfast" - and
+ # not "Subject: Pickles - where did you go?"
+ #
+ #
+@@ -83,7 +83,7 @@
+ #The following matches Date: headers that are over 100 chars in length
+ #these are impossible in the wild
+ .{100,}			Virus-Date:		MIME Header Buffer Overflow
+-.{100,}			Virus-Mime-Version:	MIME Header Buffer Overflow 
++.{100,}			Virus-Mime-Version:	MIME Header Buffer Overflow
+ .{100,}			Virus-Resent-Date:	MIME Header Buffer Overflow
+ #
+ #Let's stop that nasty BadTrans virus from uploading your keystrokes...
+@@ -111,8 +111,9 @@
+ 
+ 
+ # ******
+-# REMEMBER: run /var/qmail/bin/qmail-scanner-queue -g after
+-# this file is modified
++# REMEMBER: run to run after this file is modified:
++# /usr/lib/qmail-scanner/qmail-scanner-queue -g
+ # ******
+ #
+-# EOF 
++# vim:ts=8
++# EOF
