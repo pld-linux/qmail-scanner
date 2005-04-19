@@ -11,7 +11,7 @@ Summary:	Content scanner for Qmail
 Summary(pl):	Skaner zawarto¶ci dla Qmaila
 Name:		qmail-scanner
 Version:	1.25
-Release:	0.4
+Release:	0.12
 License:	GPL
 Group:		Applications/System
 Source0:	http://dl.sourceforge.net/qmail-scanner/%{name}-%{version}.tgz
@@ -25,6 +25,7 @@ Patch3:		%{name}-localconf-vars.patch
 Patch4:		%{name}-attach.patch
 Patch5:		%{name}-perm.patch
 Patch6:		%{name}-FHS.patch
+Patch7:		%{name}-qinject.patch
 URL:		http://qmail-scanner.sourceforge.net/
 %{?with_clamav:BuildRequires:	clamav}
 BuildRequires:	maildrop >= 1.3.8
@@ -98,6 +99,7 @@ ale tak¿e pocztê przekazywan± przez serwer (relaying).
 # allow group read permissions in tmp files
 %patch5 -p1
 %patch6 -p0 -b .FHS
+%patch7 -p1
 
 %build
 scanners=`echo \
@@ -106,18 +108,23 @@ scanners=`echo \
 `
 scanners=$(echo "$scanners" | tr ' ' ',')
 
-LANG=en_GB \
 ./configure \
+	--spooldir /var/spool/qmailscan \
+	--qmaildir /var/qmail \
+	--bindir /var/qmail/bin \
+	--qmail-queue-binary /var/qmail/bin/qmail-queue \
+	--qmail-inject-binary /var/qmail/bin/qmail-inject \
 	--qs-user %(id -un) \
 	--domain localhost \
 	--batch \
-	--debug no \
+	%{!?debug:--debug no} \
 	--log-details no \
 	--skip-setuid-test \
 	--no-QQ-check \
 	--admin root \
 	--notify none \
 	--block-password-protected \
+	--lang en_GB \
 	--scanners ${scanners:-none}
 
 # build for qmail-scanner-queue wrapper, so we don't need suidperl
@@ -233,7 +240,7 @@ fi
 %doc contrib/test-sophie.pl contrib/reformime-test.eml contrib/sub-sender-cache.pl contrib/rbl_scanner.txt
 %doc contrib/test-clamd.pl contrib/qs2mrtg.pl contrib/mrtg-qmail-scanner.cfg
 
-%config(noreplace) %{_sysconfdir}/qmail-scanner.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/qmail-scanner.conf
 
 %dir %{_libdir}/%{name}
 %attr(755,root,root) %config %{_libdir}/%{name}/qmail-scanner-queue.pl
@@ -247,14 +254,14 @@ fi
 %attr(700,qscand,qscand) /var/spool/qmailscan/quarantine
 %attr(700,qscand,qscand) /var/spool/qmailscan/working
 
-%attr(644,qscand,qscand) %config(noreplace) %verify(not size mtime md5) /var/spool/qmailscan/*.log
-%attr(640,qscand,qscand) %verify(not size mtime md5) /var/spool/qmailscan/*.db
+%attr(644,qscand,qscand) %config(noreplace) %verify(not md5 mtime size) /var/spool/qmailscan/*.log
+%attr(640,qscand,qscand) %verify(not md5 mtime size) /var/spool/qmailscan/*.db
 
 # scanner subs
 %{_libdir}/%{name}/*.pl
 
-/var/spool/qmailscan/qmail-scanner-queue-version.txt
-%config(noreplace) /var/spool/qmailscan/quarantine-attachments.txt
+%config(noreplace) %verify(not md5 mtime size) /var/spool/qmailscan/qmail-scanner-queue-version.txt
+%config(noreplace) %verify(not md5 mtime size) /var/spool/qmailscan/quarantine-attachments.txt
 
 # reports of viruses per day
 %dir /var/spool/qmailscan/reports
