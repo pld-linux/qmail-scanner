@@ -11,7 +11,7 @@ Summary:	Content scanner for Qmail
 Summary(pl):	Skaner zawarto¶ci dla Qmaila
 Name:		qmail-scanner
 Version:	1.25
-Release:	0.2
+Release:	0.4
 License:	GPL
 Group:		Applications/System
 Source0:	http://dl.sourceforge.net/qmail-scanner/%{name}-%{version}.tgz
@@ -30,7 +30,7 @@ URL:		http://qmail-scanner.sourceforge.net/
 BuildRequires:	maildrop >= 1.3.8
 BuildRequires:	perl-DB_File >= 1.803
 BuildRequires:	perl-base >= 1:5.6.1
-BuildRequires:	rpmbuild(macros) >= 1.159
+BuildRequires:	rpmbuild(macros) >= 1.200
 %if %{with spamassassin}
 BuildRequires:	spamassassin
 BuildRequires:	spamassassin-spamc
@@ -187,13 +187,12 @@ fi
 %post
 # setup vars once
 if grep -q MAILDOMAIN /etc/qmail-scanner.conf; then
-	cp /etc/qmail-scanner.conf /etc/qmail-scanner.conf.tmp
+	cp -f /etc/qmail-scanner.conf{,.rpmsave}
 	hostname=$(hostname -f 2>/dev/null || echo localhost)
-	sed -e "
+	sed -i -e "
 		s/MAILDOMAIN/$hostname/g
 		s/USERNAME/root/g
-	" /etc/qmail-scanner.conf.tmp > /etc/qmail-scanner.conf
-	rm -f /etc/qmail-scanner.conf.tmp
+	" /etc/qmail-scanner.conf
 fi
 
 # Initialize the version file.
@@ -214,12 +213,8 @@ done
 make -s -C /etc/tcprules.d
 
 %pre
-[ "`/usr/bin/getgid qscand`" ] || \
-	/usr/sbin/groupadd -g %{groupid} qscand
-
-[ "`/bin/id -u qscand 2>/dev/null`" ] || \
-	/usr/sbin/useradd -u %{userid} -d /var/spool/qmailscan \
-		-s /bin/false -g qscand -c "Qmail-Scanner Account" qscand
+%groupadd -g %{groupid} qscand
+%useradd -u %{userid} -d /var/spool/qmailscan -g qscand -c "Qmail-Scanner Account" qscand
 
 %postun
 if [ "$1" = "0" ]; then
