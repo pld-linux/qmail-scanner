@@ -3,9 +3,6 @@
 %bcond_with	spamassassin	# spamassassin
 %bcond_without	clamav		# clamav
 
-%define	groupid	210
-%define	userid	210
-
 %include	/usr/lib/rpm/macros.perl
 Summary:	Content scanner for Qmail
 Summary(pl):	Skaner zawarto¶ci dla Qmaila
@@ -150,10 +147,10 @@ install %{SOURCE2} $RPM_BUILD_ROOT%{_libdir}/%{name}/report.sh
 install qmail-scanner-queue.pl $RPM_BUILD_ROOT%{_libdir}/%{name}
 install contrib/qmail-scanner-queue $RPM_BUILD_ROOT%{_libdir}/%{name}
 
-# Install quarantine
+# Install quarantine.
 install quarantine-attachments.txt $RPM_BUILD_ROOT/var/spool/qmailscan
 
-# touch file, so we could add it to paackage
+# touch file, so we could add it to package
 > $RPM_BUILD_ROOT/var/spool/qmailscan/qmail-scanner-queue-version.txt
 
 > $RPM_BUILD_ROOT/var/spool/qmailscan/quarantine.log
@@ -220,8 +217,8 @@ done
 make -s -C /etc/tcprules.d
 
 %pre
-%groupadd -g %{groupid} qscand
-%useradd -u %{userid} -d /var/spool/qmailscan -g qscand -c "Qmail-Scanner Account" qscand
+%groupadd -g 210 qscand
+%useradd -u 210 -d /var/spool/qmailscan -g qscand -c "Qmail-Scanner Account" qscand
 
 %postun
 if [ "$1" = "0" ]; then
