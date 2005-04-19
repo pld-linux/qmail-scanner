@@ -1,0 +1,10 @@
+--- ./configure~	2005-04-19 19:33:01.000000000 +0300
++++ ./configure	2005-04-19 19:36:01.000000000 +0300
+@@ -128,6 +128,7 @@
+ 	--no-QQ-check) MANUAL_INSTALL="1";;
+ 	--skip-setuid-test) SKIP_SETUID_TEST=1 ; if [ "$2" != "" -a "`echo $2|grep '\-'`" = "" ] ; then  shift ; if [ "`echo $1|egrep -i '^1|^yes'`" != "" ]; then SKIP_SETUID_TEST="1" ; fi ;  if  [ "`echo $1|egrep -i '^[1-9]+$'`" != "" ]; then SKIP_SETUID_TEST="$1" ; fi ; if [ "`echo $1|egrep -i '^0|^no'`" != "" ]; then SKIP_SETUID_TEST="0" ; fi ; fi ;;
+ 	--qmail-queue-binary) if [ "$2" != "" ] ; then  shift ; fi ; QMAILQUEUE_BIN="$1" ;;
++	--qmail-inject-binary) if [ "$2" != "" ] ; then  shift ; fi ; QMAILINJECT_BIN="$1" ;;
+         --mime-unpacker) if [ "$2" != "" ] ; then  shift ; fi ; MIME_UNPACKER="$1" ;;
+ 	--install) INSTALLIT="1" ; if [ "$2" != "" -a "`echo $2|grep '\-'`" = "" ] ; then  shift ; fi ;;
+         *) cat <<EOF >&2
