@@ -28,7 +28,7 @@ URL:		http://qmail-scanner.sourceforge.net/
 BuildRequires:	maildrop >= 1.3.8
 BuildRequires:	perl-DB_File >= 1.803
 BuildRequires:	perl-base >= 1:5.6.1
-BuildRequires:	rpmbuild(macros) >= 1.200
+BuildRequires:	rpmbuild(macros) >= 1.202
 %if %{with spamassassin}
 BuildRequires:	spamassassin
 BuildRequires:	spamassassin-spamc
