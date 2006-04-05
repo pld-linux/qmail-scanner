@@ -214,7 +214,7 @@ for s in qmtp smtp; do
 		' /etc/tcprules.d/tcp.qmail-$s
 	fi
 done
-make -s -C /etc/tcprules.d
+%{__make} -s -C /etc/tcprules.d
 
 %pre
 %groupadd -g 210 qscand
@@ -222,8 +222,8 @@ make -s -C /etc/tcprules.d
 
 %postun
 if [ "$1" = "0" ]; then
-    %userremove qscand
-    %groupremove qscand
+	%userremove qscand
+	%groupremove qscand
 fi
 
 %files
