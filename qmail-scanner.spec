@@ -7,12 +7,12 @@
 Summary:	Content scanner for Qmail
 Summary(pl):	Skaner zawarto¶ci dla Qmaila
 Name:		qmail-scanner
-Version:	1.25
-Release:	0.12
+Version:	2.00
+Release:	0.1
 License:	GPL
-Group:		Applications/System
+Group:		Applications/Mail
 Source0:	http://dl.sourceforge.net/qmail-scanner/%{name}-%{version}.tgz
-# Source0-md5:	0117c425efb75208682fabcba4e1dd24
+# Source0-md5:	2833d295f5198e83b5f129993854d9f5
 Source1:	%{name}.conf
 Source2:	%{name}-report.sh
 Patch0:		%{name}-root.patch
@@ -33,13 +33,13 @@ BuildRequires:	rpmbuild(macros) >= 1.202
 BuildRequires:	spamassassin
 BuildRequires:	spamassassin-spamc
 %endif
-Requires(pre):	/usr/bin/getgid
+Requires(post):	sed >= 4.0
+Requires(postun):	/usr/sbin/groupdel
+Requires(postun):	/usr/sbin/userdel
 Requires(pre):	/bin/id
+Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
 Requires(pre):	/usr/sbin/useradd
-Requires(post):	sed >= 4.0
-Requires(postun):	/usr/sbin/userdel
-Requires(postun):	/usr/sbin/groupdel
 %{?with_clamav:Requires:	clamav}
 Requires:	fileutils
 Requires:	maildrop >= 1.3.8
@@ -48,8 +48,8 @@ Requires:	qmail >= 1.03-56.50
 Requires:	spamassassin
 Requires:	spamassassin-spamc
 %endif
-Provides:	user(qscand)
 Provides:	group(qscand)
+Provides:	user(qscand)
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -87,7 +87,7 @@ ale tak¿e pocztê przekazywan± przez serwer (relaying).
 %patch0 -p1
 # load sub-$SCANNER.pl if needed.
 %patch1 -p1
-# require /etc/qmail-scanner.conf
+# require %{_sysconfdir}/qmail-scanner.conf
 %patch2 -p1
 # make overriden vars as $our
 %patch3 -p1
@@ -190,13 +190,13 @@ fi
 
 %post
 # setup vars once
-if grep -q MAILDOMAIN /etc/qmail-scanner.conf; then
-	cp -f /etc/qmail-scanner.conf{,.rpmsave}
+if grep -q MAILDOMAIN %{_sysconfdir}/qmail-scanner.conf; then
+	cp -f %{_sysconfdir}/qmail-scanner.conf{,.rpmsave}
 	hostname=$(hostname -f 2>/dev/null || echo localhost)
 	sed -i -e "
 		s/MAILDOMAIN/$hostname/g
 		s/USERNAME/root/g
-	" /etc/qmail-scanner.conf
+	" %{_sysconfdir}/qmail-scanner.conf
 fi
 
 # Initialize the version file.
