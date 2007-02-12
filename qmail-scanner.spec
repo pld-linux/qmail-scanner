@@ -5,7 +5,7 @@
 
 %include	/usr/lib/rpm/macros.perl
 Summary:	Content scanner for Qmail
-Summary(pl):	Skaner zawarto¶ci dla Qmaila
+Summary(pl.UTF-8):   Skaner zawartoÅ›ci dla Qmaila
 Name:		qmail-scanner
 Version:	2.01
 Release:	0.1
@@ -66,20 +66,20 @@ some other Unix-based virus scanners, resulting in better performance.
 It is capable of scanning not only locally sent/received email, but
 also email that crosses the server in a relay capacity.
 
-%description -l pl
-Qmail-Scanner to dodatek umo¿liwiaj±cy serwerowi poczty elektronicznej
-Qmail skanowanie ca³ej przekazywanej poczty pod k±tem danych cech
-(tzn. skanowanie zawarto¶ci). Zwykle jest u¿ywany dla funkcji
-zabezpieczeñ antywirusowych, w którym to przypadku jest u¿ywany w
-po³±czeniu z zewnêtrznymi skanerami antywirusowymi, ale umo¿liwia
-tak¿e reagowanie (na poziomie serwera) na pocztê zawieraj±c± konkretne
-³añcuchy w pewnych nag³ówkach, albo pewne nazwy plików lub typy
-za³±czników (np. za³±czniki *.VBS). Mo¿e byæ u¿ywany tak¿e jako
-narzêdzie archiwizuj±ce do audytu lub kopii zapasowych. Qmail-Scanner
-jest zintegrowany z serwerem pocztowym na poziomie ni¿szym ni¿ inne
-uniksowe skanery antywirusowe, czego efektem jest lepsza wydajno¶æ.
-Program mo¿e skanowaæ nie tylko lokalnie wysy³an±/dostarczan± pocztê,
-ale tak¿e pocztê przekazywan± przez serwer (relaying).
+%description -l pl.UTF-8
+Qmail-Scanner to dodatek umoÅ¼liwiajÄ…cy serwerowi poczty elektronicznej
+Qmail skanowanie caÅ‚ej przekazywanej poczty pod kÄ…tem danych cech
+(tzn. skanowanie zawartoÅ›ci). Zwykle jest uÅ¼ywany dla funkcji
+zabezpieczeÅ„ antywirusowych, w ktÃ³rym to przypadku jest uÅ¼ywany w
+poÅ‚Ä…czeniu z zewnÄ™trznymi skanerami antywirusowymi, ale umoÅ¼liwia
+takÅ¼e reagowanie (na poziomie serwera) na pocztÄ™ zawierajÄ…cÄ… konkretne
+Å‚aÅ„cuchy w pewnych nagÅ‚Ã³wkach, albo pewne nazwy plikÃ³w lub typy
+zaÅ‚Ä…cznikÃ³w (np. zaÅ‚Ä…czniki *.VBS). MoÅ¼e byÄ‡ uÅ¼ywany takÅ¼e jako
+narzÄ™dzie archiwizujÄ…ce do audytu lub kopii zapasowych. Qmail-Scanner
+jest zintegrowany z serwerem pocztowym na poziomie niÅ¼szym niÅ¼ inne
+uniksowe skanery antywirusowe, czego efektem jest lepsza wydajnoÅ›Ä‡.
+Program moÅ¼e skanowaÄ‡ nie tylko lokalnie wysyÅ‚anÄ…/dostarczanÄ… pocztÄ™,
+ale takÅ¼e pocztÄ™ przekazywanÄ… przez serwer (relaying).
 
 %prep
 %setup -q
