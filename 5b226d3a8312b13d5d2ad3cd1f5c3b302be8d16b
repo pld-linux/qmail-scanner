@@ -1,0 +1,2 @@
+- strict perms
+- allow tmp/ dir to be read (by clamd for example)
