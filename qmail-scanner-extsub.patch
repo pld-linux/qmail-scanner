@@ -1,26 +1,21 @@
 load external sub. when you install package without scanner optimized into main
 binary, you will lose performance but still have system up.
 
-diff -u qmail-scanner-1.24.orig/qmail-scanner-queue.template qmail-scanner-1.24/qmail-scanner-queue.template
---- qmail-scanner-1.24.orig/qmail-scanner-queue.template	2004-10-20 04:49:33.000000000 +0300
-+++ qmail-scanner-1.24/qmail-scanner-queue.template	2004-12-16 01:58:13.000000000 +0200
-@@ -1019,10 +1019,18 @@
+--- qmail-scanner-2.03/qmail-scanner-queue.template~	2008-05-06 07:39:32.000000000 +0300
++++ qmail-scanner-2.03/qmail-scanner-queue.template	2008-05-06 07:41:12.329295604 +0300
+@@ -1148,6 +1148,15 @@
    }
    &debug("ini_sc: recursively scan the directory $ENV{'TMPDIR'}/");
  
 +  for (@scanner_array) {
-+	unless (defined &$_) {
++    unless (defined &$_) {
 +      my $s = $_;
 +      $s =~ s/_scanner$//;
-+	  &debug("ini_sc: load $s sub");
-+	  require "/usr/lib/qmail-scanner/sub-$s.pl";
-+	}
++      &debug("ini_sc: load $s sub");
++      require "/usr/lib/qmail-scanner/sub-$s.pl";
++    }
 +  }
 +
    #Run AV scanners - even if the message is already going to be quarantined
    #due to some Policy: this way you get the definitive answer as to what is
-   #a virus...
--
-   &scanloop; #JLH if (!$quarantine_event);
- 
-   #Only run perlscanner if no reason to quarantine found so far
+   #a virus... The exception to this is if it looks like a DoS attack - then

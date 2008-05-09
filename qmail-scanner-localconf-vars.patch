@@ -1,12 +1,13 @@
---- ../qmail-scanner-queue.template	2004-12-10 14:24:52.000000000 +0200
-+++ b/qmail-scanner-queue.template	2004-12-10 14:25:44.000000000 +0200
-@@ -92,11 +92,11 @@
- 
+--- qmail-scanner-2.03/qmail-scanner-queue.template~	2008-05-06 07:42:15.000000000 +0300
++++ qmail-scanner-2.03/qmail-scanner-queue.template	2008-05-06 07:45:20.967546473 +0300
+@@ -93,37 +93,37 @@
+ my($qscan_account)='QS_USER';
  
  #From: line  information used when making reports
 -my $V_FROM='USERNAME@MAILDOMAIN';
+-my $V_FROMNAME='ADMIN_DESCRIPTION';
 +our $V_FROM='USERNAME@MAILDOMAIN';
- my $V_FROMNAME='System Anti-Virus Administrator';
++our $V_FROMNAME='ADMIN_DESCRIPTION';
  
  # Address carbon-copied on any virus reports
 -my $QUARANTINE_CC='USERNAME@MAILDOMAIN';
@@ -14,25 +15,46 @@
  
  #Array of local domains that are checked against for
  #deciding whether or not to send recipient alerts to
-@@ -107,10 +107,10 @@
+-my @local_domains_array=(LOCAL_DOMAINS_ARRAY);
++our @local_domains_array=(LOCAL_DOMAINS_ARRAY);
+ 
+ # Array of virus that we don't want to inform the sender of.
+-my @silent_viruses_array=(SILENT_VIRUSES_ARRAY);
++our @silent_viruses_array=(SILENT_VIRUSES_ARRAY);
  
  
  #Array of virus scanners used must point to subroutines
 -my @scanner_array=(SCANNER_ARRAY);
 +our @scanner_array=(SCANNER_ARRAY);
  
+ #Array of virtual headers used within perlscanner 
+-my @virtualheaders_array=("MAILFROM","RCPTTO","REMOTEIPADDR","ZIPPASSWORDPROTECTED","ISSENSITIVEANDNOCRYPTO","CRYPTODETAILS","FILELENGTHTOOLONG","FILEDOUBLEBARRELED","FILECLSID");
++our @virtualheaders_array=("MAILFROM","RCPTTO","REMOTEIPADDR","ZIPPASSWORDPROTECTED","ISSENSITIVEANDNOCRYPTO","CRYPTODETAILS","FILELENGTHTOOLONG","FILEDOUBLEBARRELED","FILECLSID");
+ 
  #Addresses that should be alerted of any quarantined Email
 -my $NOTIFY_ADDRS='NOTIFY_ADDRESSES';
 +our $NOTIFY_ADDRS='NOTIFY_ADDRESSES';
  
  #Try to fix bad MIME messages before passing to MIME unpacker
- my $BAD_MIME_CHECKS='FIX_MIME';
-@@ -259,7 +259,7 @@
+-my $BAD_MIME_CHECKS='FIX_MIME';
++our $BAD_MIME_CHECKS='FIX_MIME';
+ 
+ #Block password protected zip files
+-#my $BLOCK_PASSWORD_PROTECTED_ARCHIVES='QUARANTINE_PASSWORD_PROTECTED';
++#our $BLOCK_PASSWORD_PROTECTED_ARCHIVES='QUARANTINE_PASSWORD_PROTECTED';
+ 
+ #Disable just the EOL char check instead of all of BAD_MIME_CHECKS
+-my $IGNORE_EOL_CHECK='DISABLE_EOL_CHECK';
++our $IGNORE_EOL_CHECK='DISABLE_EOL_CHECK';
+ 
+ # The full path to qmail programs we'll need.
+ my $qmailinject = 'QMAILINJECT_BIN';
+@@ -302,7 +302,7 @@
  
  
- #Want debugging? Enable this and read $scandir/qmail-queue.log
+ #Want debugging? Enable this and read $logdir/qmail-queue.log
 -my $DEBUG='DEBUG_LEVEL';
 +our $DEBUG='DEBUG_LEVEL';
  
- my @uufile_list = ();
- my @attachment_list = ();
+ # read site specific overrides.
+ require "/etc/qmail-scanner.conf";

@@ -1,139 +1,52 @@
---- a/quarantine-attachments.txt	2004-07-19 01:48:10.000000000 +0300
-+++ b/quarantine-attachments.txt	2004-11-28 21:47:34.000000000 +0200
+--- qmail-scanner-2.03/quarantine-events.txt~	2008-03-26 02:05:23.000000000 +0200
++++ qmail-scanner-2.03/quarantine-events.txt	2008-05-06 07:49:55.575300045 +0300
 @@ -3,7 +3,7 @@
- # This is case-insensitive, and TAB-delimited. 
+ # This is TAB-delimited. 
  #
  # ******
 -# REMEMBER: run /var/qmail/bin/qmail-scanner-queue.pl -g after 
-+# REMEMBER: run /var/qmail/bin/qmail-scanner-queue -g after
++# REMEMBER: run /usr/lib/qmail-scanner/qmail-scanner-queue -g after 
  # this file is modified
  # ******
  #
-@@ -92,16 +92,26 @@
+@@ -62,7 +62,7 @@
+ 
+ # NOTE 4: Don't use this to ban any message that's over 
+ # a maximum size  - you should use Qmail's databytes instead
+-# "echo 10000000 > /var/qmail/control/databytes" 
++# "echo 10000000 > /etc/qmail/control/databytes" 
+ # would set the maximum SMTP message size to 10Mb.
+ #
+ # NOTE 5: The second option allows you to match on header. This would allow 
+@@ -199,16 +199,23 @@
  #
  # These are examples of prudent defaults to set for most sites.
  # Commented out by default
--#.vbs	0	VBS files not allowed per Company security policy
--#.lnk	0	LNK files not allowed per Company security policy
--#.scr	0	SCR files not allowed per Company security policy
--#.wsh	0	WSH files not allowed per Company security policy
--#.hta	0	HTA files not allowed per Company security policy
--#.pif	0	PIF files not allowed per Company security policy
--#.cpl	0	CPL files not allowed per Company security policy
-+.vbs	0	VBS files not allowed per Company security policy
-+.vbe	0	VBE files not allowed per Company security policy
-+.lnk	0	LNK files not allowed per Company security policy
-+.scr	0	SCR files not allowed per Company security policy
-+.wsh	0	WSH files not allowed per Company security policy
-+.wsf	0	WSF files not allowed per Company security policy
-+.hta	0	HTA files not allowed per Company security policy
-+.pif	0	PIF files not allowed per Company security policy
-+.cpl	0	CPL files not allowed per Company security policy
-+.exe	0	EXE files not allowed per Company security policy
-+.cmd	0	CMD files not allowed per Company security policy
-+.com	0	COM files not allowed per Company security policy
-+.bat	0	BAT files not allowed per Company security policy
-+.shs	0	SHS files not allowed per Company security policy
-+.jse	0	JSE files not allowed per Company security policy
-+.js	0	JS files not allowed per Company security policy
-+
+-#.vbs	SIZE=-1	VBS files not allowed per Company security policy
+-#.lnk	SIZE=-1	LNK files not allowed per Company security policy
+-#.scr	SIZE=-1	SCR files not allowed per Company security policy
+-#.wsh	SIZE=-1	WSH files not allowed per Company security policy
+-#.hta	SIZE=-1	HTA files not allowed per Company security policy
+-#.pif	SIZE=-1	PIF files not allowed per Company security policy
+-#.cpl	SIZE=-1	CPL files not allowed per Company security policy
++.vbs	SIZE=-1	VBS files not allowed per Company security policy
++.lnk	SIZE=-1	LNK files not allowed per Company security policy
++.scr	SIZE=-1	SCR files not allowed per Company security policy
++.wsh	SIZE=-1	WSH files not allowed per Company security policy
++.hta	SIZE=-1	HTA files not allowed per Company security policy
++.pif	SIZE=-1	PIF files not allowed per Company security policy
++.cpl	SIZE=-1	CPL files not allowed per Company security policy
++.exe	SIZE=-1	EXE files not allowed per Company security policy
++.cmd	SIZE=-1	CMD files not allowed per Company security policy
++.com	SIZE=-1	COM files not allowed per Company security policy
++.bat	SIZE=-1	BAT files not allowed per Company security policy
++.shs	SIZE=-1	SHS files not allowed per Company security policy
++.jse	SIZE=-1	JSE files not allowed per Company security policy
++.js	SIZE=-1	JS files not allowed per Company security policy
  
  # ******
 -# REMEMBER: run /var/qmail/bin/qmail-scanner-queue.pl -g after 
-+# REMEMBER: run /var/qmail/bin/qmail-scanner-queue -g after
++# REMEMBER: run /usr/lib/qmail-scanner/qmail-scanner-queue -g after 
  # this file is modified
  # ******
  #
---- ./quarantine-attachments.txt~	2005-04-19 09:42:06.000000000 +0300
-+++ ./quarantine-attachments.txt	2005-04-19 09:46:29.000000000 +0300
-@@ -1,20 +1,20 @@
- # Sample of well-known viruses that perlscan_scanner can use
- #
--# This is case-insensitive, and TAB-delimited. 
-+# This is case-insensitive, and TAB-delimited.
- #
- # ******
--# REMEMBER: run /var/qmail/bin/qmail-scanner-queue -g after
--# this file is modified
-+# REMEMBER: run to run after this file is modified:
-+# /usr/lib/qmail-scanner/qmail-scanner-queue -g
- # ******
- #
- # Format: three columns
--# 
-+#
- # filename<TAB>size (in bytes)<TAB>Description of virus/whatever
- #
- # OR:
- #
- # string<TAB>Header<TAB>Description of virus/whatever
--# 
-+#
- # [this one allows you to match on (e.g.) Subject line.
- #
- # NOTE 1: This is the crudest "virus scanning" you can do - we are
-@@ -28,7 +28,7 @@
- #
- # NOTE 3: Wildcards are supported. This system can also be used to deny
- # Email containing "bad" extensions (e.g. .exe, .mp3, etc). No other
--# wildcard type is supported. Be very careful with this feature. With 
-+# wildcard type is supported. Be very careful with this feature. With
- # wildcards, the size field is ignored (i.e. any size matches).
- #
- # .exe	0	Executable attachment too large
-@@ -40,16 +40,16 @@
- #
- # ...would stop any Email containing MP3 attachments passing.
- #
--# NOTE 4: No you can't use  this to ban any file (i.e. *.*) that's over 
--# a certain size  - you should 
--# "echo 10000000 > /var/qmail/control/databytes" 
-+# NOTE 4: No you can't use this to ban any file (i.e. *.*) that's over
-+# a certain size - you should
-+# "echo 10000000 > /var/qmail/control/databytes"
- # to set the maximum SMTP message size to 10Mb.
- #
--# NOTE 5: The second option allows you to match on header. This would allow 
--# you to block Email viruses when you don't know anything else other than 
--# there's a wierd Subject line (or From line, or X-Spanska: header, ...). 
--# Note that it's a case-sensitive, REGEX string, and the system will 
--# automatically surround it with ^ and $ before matching. i.e. if you 
-+# NOTE 5: The second option allows you to match on header. This would allow
-+# you to block Email viruses when you don't know anything else other than
-+# there's a wierd Subject line (or From line, or X-Spanska: header, ...).
-+# Note that it's a case-sensitive, REGEX string, and the system will
-+# automatically surround it with ^ and $ before matching. i.e. if you
- # want wildcards, explicitly put them in...
- #
- # The string _must_be_ "Virus-" followed by the header you wish to match
-@@ -59,7 +59,7 @@
- #
- # Pickles.*Breakfast	Virus-Subject:	Fake Example Pickles virus
- #
--# will match "Subject: Pickles for Breakfast" - and 
-+# will match "Subject: Pickles for Breakfast" - and
- # not "Subject: Pickles - where did you go?"
- #
- #
-@@ -83,7 +83,7 @@
- #The following matches Date: headers that are over 100 chars in length
- #these are impossible in the wild
- .{100,}			Virus-Date:		MIME Header Buffer Overflow
--.{100,}			Virus-Mime-Version:	MIME Header Buffer Overflow 
-+.{100,}			Virus-Mime-Version:	MIME Header Buffer Overflow
- .{100,}			Virus-Resent-Date:	MIME Header Buffer Overflow
- #
- #Let's stop that nasty BadTrans virus from uploading your keystrokes...
-@@ -111,8 +111,9 @@
- 
- 
- # ******
--# REMEMBER: run /var/qmail/bin/qmail-scanner-queue -g after
--# this file is modified
-+# REMEMBER: run to run after this file is modified:
-+# /usr/lib/qmail-scanner/qmail-scanner-queue -g
- # ******
- #
--# EOF 
-+# vim:ts=8
-+# EOF
