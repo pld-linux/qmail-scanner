@@ -7,12 +7,12 @@
 Summary:	Content scanner for Qmail
 Summary(pl.UTF-8):	Skaner zawartości dla Qmaila
 Name:		qmail-scanner
-Version:	2.01
+Version:	2.04
 Release:	0.1
 License:	GPL
 Group:		Applications/Mail
 Source0:	http://dl.sourceforge.net/qmail-scanner/%{name}-%{version}.tgz
-# Source0-md5:	3fa95fb2e6bcea5adf450b6f1497ff5e
+# Source0-md5:	b11d2f177074ad6b4b68b93de227d78e
 Source1:	%{name}.conf
 Source2:	%{name}-report.sh
 Patch0:		%{name}-root.patch
@@ -20,11 +20,11 @@ Patch1:		%{name}-extsub.patch
 Patch2:		%{name}-localconf.patch
 Patch3:		%{name}-localconf-vars.patch
 Patch4:		%{name}-attach.patch
-Patch5:		%{name}-perm.patch
 Patch6:		%{name}-FHS.patch
 Patch7:		%{name}-qinject.patch
 URL:		http://qmail-scanner.sourceforge.net/
 %{?with_clamav:BuildRequires:	clamav}
+BuildRequires:	daemontools
 BuildRequires:	maildrop >= 1.3.8
 BuildRequires:	perl-DB_File >= 1.803
 BuildRequires:	perl-base >= 1:5.6.1
@@ -93,16 +93,14 @@ ale także pocztę przekazywaną przez serwer (relaying).
 %patch3 -p1
 # disallow by default common ms-windows executables
 %patch4 -p1
-# allow group read permissions in tmp files
-%patch5 -p1
-%patch6 -p0 -b .FHS
+%patch6 -p0
 %patch7 -p1
 
 %build
-scanners=`echo \
+scanners=$(echo \
 %{?with_clamav:clamscan clamdscan} \
 %{?with_spamassassin:verbose_spamassassin fast_spamassassin} \
-`
+)
 scanners=$(echo "$scanners" | tr ' ' ',')
 
 ./configure \
@@ -120,7 +118,6 @@ scanners=$(echo "$scanners" | tr ' ' ',')
 	--no-QQ-check \
 	--admin root \
 	--notify none \
-	--block-password-protected \
 	--lang en_GB \
 	--scanners ${scanners:-none}
 
@@ -148,14 +145,14 @@ install qmail-scanner-queue.pl $RPM_BUILD_ROOT%{_libdir}/%{name}
 install contrib/qmail-scanner-queue $RPM_BUILD_ROOT%{_libdir}/%{name}
 
 # Install quarantine.
-install quarantine-attachments.txt $RPM_BUILD_ROOT/var/spool/qmailscan
+install quarantine-events.txt $RPM_BUILD_ROOT/var/spool/qmailscan
 
 # touch file, so we could add it to package
 > $RPM_BUILD_ROOT/var/spool/qmailscan/qmail-scanner-queue-version.txt
 
 > $RPM_BUILD_ROOT/var/spool/qmailscan/quarantine.log
 > $RPM_BUILD_ROOT/var/spool/qmailscan/qmail-queue.log
-> $RPM_BUILD_ROOT/var/spool/qmailscan/quarantine-attachments.db
+> $RPM_BUILD_ROOT/var/spool/qmailscan/quarantine-events.db
 
 # Install virus scanner subroutines
 for s in sub-*.pl; do
@@ -182,7 +179,7 @@ if [[ "$groups" != *qscand* ]]; then
 		%{_sbindir}/usermod -G $(echo $groups qscand | tr ' ' ',') clamav
 		echo "Adding clamav to qscand group GID=$QSCAND"
 		if [ -f /var/lock/subsys/clamd ]; then
-			/etc/rc.d/init.d/clamd restart >&2
+			/sbin/service clamd restart
 		fi
 	fi
 fi
@@ -232,7 +229,7 @@ fi
 # html
 %doc README.html FAQ.php TODO.php configure-options.php manual-install.php perlscanner.php
 # and contrib
-%doc contrib/spamc-nice.eml contrib/test-trophie.pl contrib/logrotate.qmailscanner contrib/sub-avpdaemon.pl
+%doc contrib/spamc-nice.eml contrib/test-trophie.pl contrib/logrotate.qmail-scanner contrib/sub-avpdaemon.pl
 %doc contrib/logging_first_80_chars.eml contrib/spamc-nasty.eml contrib/avpdeamon.init contrib/test_installation.sh
 %doc contrib/test-sophie.pl contrib/reformime-test.eml contrib/sub-sender-cache.pl contrib/rbl_scanner.txt
 %doc contrib/test-clamd.pl contrib/qs2mrtg.pl contrib/mrtg-qmail-scanner.cfg
@@ -240,7 +237,7 @@ fi
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/qmail-scanner.conf
 
 %dir %{_libdir}/%{name}
-%attr(755,root,root) %config %{_libdir}/%{name}/qmail-scanner-queue.pl
+%config %attr(755,root,root) %{_libdir}/%{name}/qmail-scanner-queue.pl
 %attr(6755,qscand,qscand) %{_libdir}/%{name}/qmail-scanner-queue
 
 %dir %attr(750,qscand,qscand) /var/spool/qmailscan
@@ -255,10 +252,10 @@ fi
 %attr(640,qscand,qscand) %verify(not md5 mtime size) /var/spool/qmailscan/*.db
 
 # scanner subs
-%{_libdir}/%{name}/*.pl
+%{_libdir}/%{name}/sub-*.pl
 
 %config(noreplace) %verify(not md5 mtime size) /var/spool/qmailscan/qmail-scanner-queue-version.txt
-%config(noreplace) %verify(not md5 mtime size) /var/spool/qmailscan/quarantine-attachments.txt
+%config(noreplace) %verify(not md5 mtime size) /var/spool/qmailscan/quarantine-events.txt
 
 # reports of viruses per day
 %dir /var/spool/qmailscan/reports
