@@ -1,0 +1,8 @@
+- upgrade to 1.23
+- use qmail-scanner-queue suid binary (no need for suid perl)
+- use qscand uid/gid
+- add lots of doc
+- rediff config and permission patches
+- clamav / spamassassin are bconds
+- add versions to deps
+- FIXME: package needs qscand uid/gid at package time, otherwise can be packaged as non-root
