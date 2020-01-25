@@ -3,7 +3,6 @@
 %bcond_with	spamassassin	# spamassassin
 %bcond_without	clamav		# clamav
 
-%include	/usr/lib/rpm/macros.perl
 Summary:	Content scanner for Qmail
 Summary(pl.UTF-8):	Skaner zawartości dla Qmaila
 Name:		qmail-scanner
